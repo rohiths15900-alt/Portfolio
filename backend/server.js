@@ -11,6 +11,7 @@ const app = express();
 /* ---------------------------------------------------------------
    1. MIDDLEWARE  (code that runs on every request before your routes)
 ---------------------------------------------------------------- */
+app.set("trust proxy", 1); // Render sits behind one proxy
 app.use(express.json({ limit: "10kb" })); // lets us read JSON sent by React
 app.use(cors({ origin: process.env.CLIENT_URL })); // only YOUR website may call this API
 
