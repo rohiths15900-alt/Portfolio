@@ -56,7 +56,7 @@ const PROJECTS = [
     tags: ['UI design', 'React.js', 'MongoDB', 'Full Stack', 'Node.js','Deployment'],
     description: "Developed a modern, responsive personal portfolio website using the MERN stack, featuring React.js for the frontend and Node.js with Express.js for backend functionality. The website showcases my technical skills, projects, professional profile, and contact information through a clean, interactive, and visually appealing user interface.",
     image: '/heroo.png',
-    link: 'https://github.com/your-username/project-6',
+    link: 'https://github.com/rohiths15900-alt/Portfolio',
   },
   {
     // 7th card: closing "coming soon" card
