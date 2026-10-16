@@ -42,8 +42,7 @@ const Counter = mongoose.model(
    3. EMAIL SETUP  (sends you a notification when someone writes)
 ---------------------------------------------------------------- */
 
-
-
+// Gmail transporter: only used on your own computer
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -51,31 +50,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS, // Gmail "App Password", NOT your normal password
   },
 });
-
-
-/* ---------------------------------------------------------------
-   4. ROUTES  (the URLs your React app talks to)
----------------------------------------------------------------- */
-
-// Health check - open http://localhost:5000/ to confirm the server is alive
-app.get("/", (req, res) => res.send("Backend is running ✅"));
-
-// Stop spammers: max 5 messages per IP every 15 minutes
-const contactLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  message: { error: "Too many messages. Please try again later." },
-});
-
-const ALLOWED_SUBJECTS = [
-  "Job Opportunity",
-  "Project / Freelance",
-  "Collaboration",
-  "Just saying hi",
-];
-
-
-// Makes visitor text safe to put inside HTML (stops people injecting code)
 
 const sendNotification = async ({ replyTo, subject, text, html }) => {
   // On Render: use Resend (HTTPS, not blocked)
@@ -100,13 +74,36 @@ const sendNotification = async ({ replyTo, subject, text, html }) => {
   }
 
   // On your computer: keep using Gmail
-  await sendNotification({
-  replyTo: email,
-  subject: `${SUBJECT_EMOJI[subject] || "✉️"} [Portfolio] ${subject} - ${name}`,
-  text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`,
-  html: buildEmailHtml({ name, email, subject, message }),
-});
+  await transporter.sendMail({
+    from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+    to: process.env.EMAIL_TO || process.env.EMAIL_USER,
+    replyTo,
+    subject,
+    text,
+    html,
+  });
 };
+
+/* ---------------------------------------------------------------
+   4. ROUTES  (the URLs your React app talks to)
+---------------------------------------------------------------- */
+
+// Health check - open http://localhost:5000/ to confirm the server is alive
+app.get("/", (req, res) => res.send("Backend is running ✅"));
+
+// Stop spammers: max 5 messages per IP every 15 minutes
+const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { error: "Too many messages. Please try again later." },
+});
+
+const ALLOWED_SUBJECTS = [
+  "Job Opportunity",
+  "Project / Freelance",
+  "Collaboration",
+  "Just saying hi",
+];
 
 // ---- POST /api/contact : receive the form ----
 app.post("/api/contact", contactLimiter, async (req, res) => {
@@ -135,19 +132,15 @@ app.post("/api/contact", contactLimiter, async (req, res) => {
       message: message.trim(),
     });
 
-    // 2) Email yourself (if this fails, the message is still saved)
-    try {
-               await transporter.sendMail({
-     from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
-     to: process.env.EMAIL_TO || process.env.EMAIL_USER,
-     replyTo: email,
-     subject: `${SUBJECT_EMOJI[subject] || "✉️"} [Portfolio] ${subject} - ${name}`,
-     text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`,
-     html: buildEmailHtml({ name, email, subject, message }),
-   });
-    } catch (mailErr) {
-      console.error("Email failed (message was still saved):", mailErr.message);
-    }
+    // 2) Email yourself in the background (message is already saved)
+    sendNotification({
+      replyTo: email,
+      subject: `${SUBJECT_EMOJI[subject] || "✉️"} [Portfolio] ${subject} - ${name}`,
+      text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\n${message}`,
+      html: buildEmailHtml({ name, email, subject, message }),
+    }).catch((mailErr) =>
+      console.error("Email failed (message was still saved):", mailErr.message)
+    );
 
     res.json({ ok: true });
   } catch (err) {
