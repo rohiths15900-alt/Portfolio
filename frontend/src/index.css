@@ -2633,7 +2633,7 @@ html.lenis body {
   inherits: false;
 }
 
-===== Player shell: fixed in the bottom-right corner =====
+/* ===== Player shell: fixed in the bottom-right corner ===== */
 .mp {
   /* theme - change these to match your site */
   --mp-accent: #4de8f4;

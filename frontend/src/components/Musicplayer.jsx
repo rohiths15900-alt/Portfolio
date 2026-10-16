@@ -11,7 +11,7 @@ const TRACKS = [
     title: "Billie Jean",
     artist: "Portfolio Radio",
     src: "/Paint It Black.mp3",
-    cover: "/skull.png",
+    cover: "/skull.Png",
   },
   // {
   //   title: "Another Track",
