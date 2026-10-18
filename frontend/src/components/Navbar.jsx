@@ -108,7 +108,7 @@ const Navbar = () => {
           CONTACT
         </a>
         <a
-          href="/rohith%27s_resume.pdf"
+          href="/rohith.pdf"
           className="resume-btn"
           download
           onClick={closeMenu}

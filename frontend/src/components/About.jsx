@@ -98,7 +98,7 @@ const About = () => {
           <div className="about-actions" data-reveal>
             <a
               className="about-btn about-btn--primary"
-              href="/rohith's_resume.pdf"
+              href="/rohith.pdf"
               download="Rohith_Resume.pdf"
             >
               <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
