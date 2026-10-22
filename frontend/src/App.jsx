@@ -1,6 +1,6 @@
 
 import './App.css'
-
+import { Analytics } from '@vercel/analytics/react'
 import React from 'react'
 import ParticleBackground from './components/ParticleBackground'
 import CustomCursor from './components/CustomCursor'
@@ -18,6 +18,7 @@ import Ex from './components/Ex'
 const App = () => {
   return (
     <div>
+      <Analytics />
       <ParticleBackground/>
       <CustomCursor/>
       <ScrollEffects/>
