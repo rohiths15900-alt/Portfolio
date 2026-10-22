@@ -59,7 +59,16 @@ const PROJECTS = [
     link: 'https://github.com/rohiths15900-alt/Portfolio',
   },
   {
-    // 7th card: closing "coming soon" card
+    title: 'Taskly – To-do app',
+    tags: ['React Native', 'Firebase Auth', 'MongoDB', 'Node.js'],
+    description:
+      'A cross-platform to-do app built with React Native. Users sign in with Firebase Authentication, and tasks are stored in MongoDB through a Node.js backend. It has onboarding, task tracking with completed and pending stats, and a clean, easy-to-use interface.',
+    image: '/app.png',
+    link: 'https://github.com/rohiths15900-alt/Taskly',
+    apkLink: 'https://drive.google.com/file/d/1Z1lsgtaEHIf1PWyejzFPNR0Y5_wiiS17/view?usp=sharing',
+  },
+  {
+    // closing "coming soon" card
     title: 'To be continued…',
     comingSoon: true,
     description: 'More projects are on the way. Check back soon.',
@@ -75,6 +84,14 @@ const GithubIcon = () => (
 const DriveIcon = () => (
   <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" />
+  </svg>
+)
+
+const DownloadIcon = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M12 3v12" />
+    <path d="m7 10 5 5 5-5" />
+    <path d="M5 21h14" />
   </svg>
 )
 
@@ -157,16 +174,30 @@ const Experience = () => {
                     </ul>
                   )}
                   <p>{p.description}</p>
-                  <a
-                    className="gh-btn"
-                    href={p.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${p.title} ${p.linkType === 'drive' ? 'project files on Google Drive' : 'on GitHub'}`}
-                  >
-                    {p.linkType === 'drive' ? <DriveIcon /> : <GithubIcon />}
-                    <span>{p.linkType === 'drive' ? 'View project files' : 'View on GitHub'}</span>
-                  </a>
+                  <div className="cardd-links" style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                    <a
+                      className="gh-btn"
+                      href={p.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${p.title} ${p.linkType === 'drive' ? 'project files on Google Drive' : 'on GitHub'}`}
+                    >
+                      {p.linkType === 'drive' ? <DriveIcon /> : <GithubIcon />}
+                      <span>{p.linkType === 'drive' ? 'View project files' : 'View on GitHub'}</span>
+                    </a>
+                    {p.apkLink && (
+                      <a
+                        className="gh-btn"
+                        href={p.apkLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${p.title} live APK download`}
+                      >
+                        <DownloadIcon />
+                        <span>Download APK</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
 
                 <div className="cardd-media">
